@@ -27,6 +27,26 @@ Dylan E.: Discuss with Gavin.
 Louis: NA  
 Santiago: Discuss with Gavin.  
 Wen: [Coastal temperate rainforest soil carbon](https://datadryad.org/dataset/doi:10.5061/dryad.5jf6j1r) [use 2024 version]  
+
+## Good Data Sources
+
+### 1. Our World in Data (OWID) – Climate, Emissions, Energy, and Environmental Indicators  
+
+Link: [www.ourworldindata.org](www.ourworldindata.org) (explore via charts or the CO₂ & Greenhouse Gas Emissions explorer and similar pages for temperature, land use, etc.)  
+  
+What you get: Clean, country-year (or global) tabular CSVs with long time series (often 1800s–present) on CO₂/GHG emissions (by fuel, per capita, consumption-based), surface temperature anomalies, energy mix, land-use change, biodiversity indicators, and more. Multiple related variables in one dataset for multivariate analysis.
+
+### 2. USGS Earthquake Catalog
+
+Link: [www.earthquake.usgs.gov/earthquakes/search](www.earthquake.usgs.gov/earthquakes/search) (or the real-time feeds at earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php for starters)  
+  
+What you get: Tabular CSV with columns for time, latitude/longitude, depth, magnitude, location name, type (earthquake vs. explosion), and more. Queryable for global or regional events over any time period (e.g., all M4+ worldwide since 1900).
+
+### 3. Climate TRACE Global Emissions Inventory
+
+Link: [www.climatetrace.org/data](www.climatetrace.org/data) (downloads section)  
+  
+What you get: ZIP packages of multiple CSVs with country-level or sector-level greenhouse gas emissions (CO₂e by gas, subsector, source) from 2015–2025 (including monthly and projected data). Covers power, manufacturing, fossil fuels, agriculture, waste, etc., with confidence intervals
   
 ## Deliverables
 
