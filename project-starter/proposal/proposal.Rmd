@@ -1,6 +1,6 @@
 ---
 title: "Project proposal"
-author: "Team name"
+author: "Arianna Telles"
 output: html_document
 ---
 
@@ -9,8 +9,33 @@ library(tidyverse)
 library(broom)
 ```
 
+## Introduction
+For my final project I will be exploring Lead (Pb) concentrations within the surface soil of the Pilsen neighborhood in Chicago. This data was collected using a portable X-Ray Fluorescence Spectrometer (pXRF) at various community-based locations as well as the industrial corridor in that neighborhood. The pXRF is an efficient tool for gaining a general idea on the Pb levels within the soil, but is not 100% accurate. There are two potential polluters that were examined during data collection, SIMS and FISK, both along the industrial corridor. The other sites including various community locations (parks, schools, and community gardens), that were all sampled based on available soil and accessibility. In this project, I will me examining the relationship between Pb concentrations at these various locations. 
+
 ## 1. Data
+```{r}
+library(tidyverse)
+Pb = read_csv("../data/pXRFData_Pb.csv")
+glimpse(Pb)
+summary(Pb)
+```
 
 ## 2. Exploratory Visualization
+```{r}
+library(ggplot2)
+PbLoc <- Pb%>%
+filter(Location %in% c("HarrisonPark", "FISK", "SIMS", "PaseoGarden", "IrmaRuizSchool", "DvorakPark", "Cermak"))
+                          
+ggplot(PbLoc) +
+  aes(x = Pb_ppm, y = Location) +
+  geom_boxplot() +
+    theme_classic(base_size = 15) 
+```
+
 
 ## 3. Possible question and method
+Using this data, I plan to run an ANOVA to understand the relationship between the various sites and the Pb concentration. I am also curious how proximity to the industrial corridor may impact the Pb concentration. To explore this, I would add another variable to the data set that has the distance from the these data collected on the industrial corridor. 
+
+
+
+
