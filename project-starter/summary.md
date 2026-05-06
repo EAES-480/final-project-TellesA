@@ -12,7 +12,7 @@ Based on these results I can conclude that the site locations of parks, schools,
 
 ## Presentation
 
-Our presentation can be found [here](presentation/presentation.html).
+[presentation](file:project/project-starter/presentation/presentation.html)
 
 ## Data
 

@@ -38,7 +38,6 @@ style_xaringan(
   title_slide_background_image = "img/light-brown-background-0nz9ynihuiauubfg.jpg"
 )
 ```
-
 ---
 class: center, middle
 
