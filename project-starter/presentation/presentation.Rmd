@@ -35,7 +35,7 @@ Pb2 = read_csv("../data/survey_results.csv")
 
 ```{r echo = FALSE}
 style_xaringan(
-  title_slide_background_image = "img/light-brown-background-0nz9ynihuiauubfg.jpg"
+  title_slide_background_image = "img/light-brown-background-0nz9ynihuiauubfg.jpg", background_image = "img/light-brown-background-0nz9ynihuiauubfg.jpg"
 )
 ```
 ---
@@ -44,7 +44,6 @@ class: center, middle
 ## How do surface soil lead levels vary across these different sample sites?
 
 ---
-
 # Background
 
 - Urban soils are often contaminated with lead from historical sources like leaded gasoline or leaded paint, as well as pollution from industrial sources
@@ -105,14 +104,17 @@ ggplot(Pb2) +
 - Reject the null hypothesis
 ]
 .pull-right[
-```{r}
+```{r echo=FALSE}
 site_aov <- aov(PbMeasurement_ppm ~ SamplingSite, data = Pb2%>%
             filter(PbMeasurement_ppm < 900)) #remove outliers
+```
+
+```{r}
 summary(site_aov)
 ```
 ]
 ---
-# Linear Regression Pb Concentration ~ Sample Site
+# Linear Model Pb Concentration ~ Sample Site
 
 .pull-left[
 - Sites were compared to the Cermak2 transect
@@ -122,9 +124,11 @@ summary(site_aov)
 - Sample sites explain about 18.61% of the variability within lead concentrations
 ]
 .pull-right[
-```{r}
+```{r echo=FALSE}
 site_lm <- lm(PbMeasurement_ppm ~ SamplingSite, data = Pb2%>%
             filter(PbMeasurement_ppm < 900))
+```
+```{r}
 summary(site_lm)
 ```
 
@@ -132,7 +136,7 @@ summary(site_lm)
 
 ---
 
-# Linear Regression Pb Concentration ~ Site Group
+# Linear Model Pb Concentration ~ Site Group
 
 .pull-left[
 - Compared each of the site categories to the garden category
@@ -141,7 +145,7 @@ summary(site_lm)
 - Site groups explain about 19.57% of the variability within lead concentrations
 ]
 .pull-right[
-```{r}
+```{r echo=FALSE}
 #add new samplingsite categories
 Pbdf <-Pb2 %>%
   mutate(SiteGroup = case_when(
@@ -154,6 +158,8 @@ Pbdf <-Pb2 %>%
          )
 #Linear model Pb ~ GroupSite (industrial corridor vs residential vs community based sites)
 Loc2 <- lm(PbMeasurement_ppm ~ SiteGroup, data = Pbdf)
+```
+```{r}
 summary(Loc2)
 ```
 

@@ -41,7 +41,6 @@ class: center, middle
 ## How do surface soil lead levels vary across these different sample sites?
 
 ---
-
 # Background
 
 - Urban soils are often contaminated with lead from historical sources like leaded gasoline or leaded paint, as well as pollution from industrial sources
@@ -89,9 +88,9 @@ class: inverse, middle, center
 ]
 .pull-right[
 
+
+
 ``` r
-site_aov &lt;- aov(PbMeasurement_ppm ~ SamplingSite, data = Pb2%&gt;%
-            filter(PbMeasurement_ppm &lt; 900)) #remove outliers
 summary(site_aov)
 ```
 
@@ -104,7 +103,7 @@ summary(site_aov)
 ```
 ]
 ---
-# Linear Regression Pb Concentration ~ Sample Site
+# Linear Model Pb Concentration ~ Sample Site
 
 .pull-left[
 - Sites were compared to the Cermak2 transect
@@ -115,9 +114,8 @@ summary(site_aov)
 ]
 .pull-right[
 
+
 ``` r
-site_lm &lt;- lm(PbMeasurement_ppm ~ SamplingSite, data = Pb2%&gt;%
-            filter(PbMeasurement_ppm &lt; 900))
 summary(site_lm)
 ```
 
@@ -153,7 +151,7 @@ summary(site_lm)
 
 ---
 
-# Linear Regression Pb Concentration ~ Site Group
+# Linear Model Pb Concentration ~ Site Group
 
 .pull-left[
 - Compared each of the site categories to the garden category
@@ -163,19 +161,8 @@ summary(site_lm)
 ]
 .pull-right[
 
+
 ``` r
-#add new samplingsite categories
-Pbdf &lt;-Pb2 %&gt;%
-  mutate(SiteGroup = case_when(
-    SamplingSite %in% c("SIMS", "Cermak2", "Fisk") ~ "IC",
-    SamplingSite == "Paulina" ~ "Res",
-    SamplingSite %in% c("Dvorak", "HarrisonPark") ~ "Park",
-    SamplingSite == "IrmaRuizSchool" ~ "School",
-    SamplingSite == "Paseo" ~ "Garden"
-  )
-         )
-#Linear model Pb ~ GroupSite (industrial corridor vs residential vs community based sites)
-Loc2 &lt;- lm(PbMeasurement_ppm ~ SiteGroup, data = Pbdf)
 summary(Loc2)
 ```
 
