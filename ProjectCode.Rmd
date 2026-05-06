@@ -1,0 +1,18 @@
+---
+title: "ProjectCode"
+output: html_document
+date: "2026-04-29"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Read in Data and take a peak
+```{r}
+library(tidyverse)
+Pb2 = read_csv("../data/survey_results.csv")
+glimpse(Pb2)
+summary(Pb2)
+```
+

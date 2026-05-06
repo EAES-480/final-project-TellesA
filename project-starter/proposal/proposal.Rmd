@@ -10,12 +10,12 @@ library(broom)
 ```
 
 ## Introduction
-For my final project I will be exploring Lead (Pb) concentrations within the surface soil of the Pilsen neighborhood in Chicago. This data was collected using a portable X-Ray Fluorescence Spectrometer (pXRF) at various community-based locations as well as the industrial corridor in that neighborhood. The pXRF is an efficient tool for gaining a general idea on the Pb levels within the soil, but is not 100% accurate. There are two potential polluters that were examined during data collection, SIMS and FISK, both along the industrial corridor. The other sites including various community locations (parks, schools, and community gardens), that were all sampled based on available soil and accessibility. In this project, I will me examining the relationship between Pb concentrations at these various locations. 
+For my final project I will be exploring Lead (Pb) concentrations within the surface soil of the Pilsen neighborhood in Chicago. This data was collected using a portable X-Ray Fluorescence Spectrometer (pXRF) at various community-based locations as well as the industrial corridor in that neighborhood. The pXRF is an efficient tool for gaining a general idea on the Pb levels within the soil, but is not 100% accurate. There are two potential polluters that were examined during data collection, SIMS and FISK, both along the industrial corridor. The other sites including various community locations (parks, schools, and community gardens), that were all sampled based on available soil and accessibility. In this project, I will be examining the relationship between Pb concentrations at these various locations. 
 
 ## 1. Data
 ```{r}
 library(tidyverse)
-Pb = read_csv("../data/pXRFData_Pb.csv")
+Pb = read_csv("../data/Survey_Results_New2.csv")
 glimpse(Pb)
 summary(Pb)
 ```

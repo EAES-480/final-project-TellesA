@@ -1,0 +1,110 @@
+---
+title: "ProjectCode"
+output: html_document
+date: "2026-04-29"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Read in Data and take a peak
+```{r}
+library(tidyverse)
+Pb2 = read_csv("../data/survey_results.csv")
+glimpse(Pb2)
+
+```
+
+#Explore PbMeasurement and SamplingSite relationship
+```{r}
+library(ggplot2)
+
+ggplot(Pb2) +
+  aes(x = PbMeasurement_ppm, y = SamplingSite) +
+  geom_boxplot() +
+    theme_classic(base_size = 15)+
+   labs(
+    x = "Sampling Site",
+    y = "Pb Concentration (ppm)",
+    title = "Pb Concentration Distribution across Sampling Sites")
+
+#boxplot without outliers
+ggplot(Pb2) +
+  aes(x = PbMeasurement_ppm, y = SamplingSite) +
+  geom_boxplot() +
+    theme_classic(base_size = 15)+
+    coord_cartesian(xlim = c(0, 900))+
+   labs(
+    x = "Sampling Site",
+    y = "Pb Concentration (ppm)",
+    title = "Pb Concentration Distribution across Sampling Sites")
+
+```
+#ANOVA sampling site
+```{r}
+site_aov <- aov(PbMeasurement_ppm ~ SamplingSite, data = Pb2%>%
+            filter(PbMeasurement_ppm < 900)) #remove outliers
+summary(site_aov)
+plot(site_aov)
+```
+# linear model Pb ~ Site
+```{r}
+
+site_lm <- lm(PbMeasurement_ppm ~ SamplingSite, data = Pb2%>%
+            filter(PbMeasurement_ppm < 900))
+summary(site_lm)
+plot(site_lm)
+```
+
+```{r}
+#add new samplingsite categories
+Pbdf <-Pb2 %>%
+  mutate(SiteGroup = case_when(
+    SamplingSite %in% c("SIMS", "Cermak2", "Fisk") ~ "IC",
+    SamplingSite == "Paulina" ~ "Res",
+    SamplingSite %in% c("Dvorak", "HarrisonPark") ~ "Park",
+    SamplingSite == "IrmaRuizSchool" ~ "School",
+    SamplingSite == "Paseo" ~ "Garden"
+  )
+         )
+Pbdf
+
+#Linear model Pb ~ GroupSite (industrial corridor vs residential vs community based sites)
+Loc2 <- lm(PbMeasurement_ppm ~ SiteGroup, data = Pbdf)
+summary(Loc2)
+plot(Loc2)
+```
+#Explore PbMeasurement and Buffer relationship
+```{r}
+ggplot(Pb2)+
+  aes(x = factor(Buffer_m)  , y = PbMeasurement_ppm)+
+  geom_boxplot()+
+  geom_jitter()+
+  coord_cartesian(ylim = c(0, 900)) 
+```
+#buffer and Pb measurement across sample sites
+```{r}
+#buffer and sample site w/o outlier
+ggplot(Pb2)+
+  aes(x = factor(Buffer_m), y = PbMeasurement_ppm)+
+  geom_jitter()+
+  facet_wrap(~SamplingSite)+
+  coord_cartesian(ylim = c(0, 800)) 
+```
+#ANOVA buffer
+```{r}
+Buf_aov <- aov(PbMeasurement_ppm ~ factor(Buffer_m),
+  data = Pb2%>%
+  filter(PbMeasurement_ppm < 900))
+
+summary(Buf_aov)
+plot(Buf_aov)
+```
+#linear model Pb~Buffer 
+```{r}
+Buf <- lm(PbMeasurement_ppm ~ factor(Buffer_m), data = Pb2 %>%
+            filter(PbMeasurement_ppm < 900))
+summary(Buf)
+plot(Buf)
+```

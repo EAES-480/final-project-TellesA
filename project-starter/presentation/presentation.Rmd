@@ -1,7 +1,6 @@
 ---
-title: "Presentation title"
-subtitle: "Presentation subtitle (if any)"
-author: "Team name <br> Names of team members"
+title: "Lead (Pb) Concentrations in Pilsen Surface Soils"
+author: "Arianna Telles"
 institute: "University of Illinois at Chicago"
 date: "`r Sys.Date()`"
 output:
@@ -31,148 +30,149 @@ knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618,
 
 ```{r load-data, include=FALSE}
 # Load your data here
+Pb2 = read_csv("../data/survey_results.csv")
 ```
 
-```{r}
+```{r echo = FALSE}
 style_xaringan(
-  title_slide_background_image = "img/confetti.jpg"
+  title_slide_background_image = "img/light-brown-background-0nz9ynihuiauubfg.jpg"
 )
 ```
 
-
+---
 class: center, middle
 
-## A statement of the overall goal / research question
+## How do surface soil lead levels vary across these different sample sites?
 
 ---
 
-class: inverse, center, middle
+# Background
 
-# Section title
+- Urban soils are often contaminated with lead from historical sources like leaded gasoline or leaded paint, as well as pollution from industrial sources
 
----
+- Pilsen is known for its industrial corridor that has contaminated the air and the soil 
 
-# Hello World
-
-- Click the `Knit` button to compile your presentation
-
-- Make sure to commit and push all resulting files to your GitHub repo
+- Most facilities have been shut down, there are still two potential polluters that are still running: Fisk, a coal-run powerplant, and SIMS, a metal recycling facility.
 
 ---
 
 class: inverse, middle, center
 
-# Using xaringan
-
----
-
-# xaringan
-
-- The presentation is created using the `xaringan` package
-
-- Use `---` to separate slides and `--` for incremental builds
-
---
-
-- Like this
-
----
-
-# Layouts
-
-You can use plain text
-
-- or bullet points
-
-.pull-left[
-or text in two columns $^*$
-]
-.pull-right[
-- like
-- this
-]
-
-.footnote[
-[*] And add footnotes
-]
-
----
-
-# Code
-
-```{r boring-regression}
-# a boring regression
-model <- lm(dist ~ speed, data = cars)
-tidy(model)
-glance(model)
+# Data Collection
+```{r echo = FALSE, out.width = "80%", fig.align = "center", fig.cap = "Map of Screening Sites"}
+include_graphics("img/MapofScreeningSites.jpeg")
 ```
+---
+
+# Methodology
+
+- Explore relationship using boxplots and summary statistics 
+
+- ANOVA 
+
+- Linear regression Pb Concentration ~ Sample Site
+
+- Linear regression Pb Concentration ~ Site Group
+
 
 ---
 
-# Plots
-
-```{r recode-species, echo = FALSE}
-# In this chunk I'm doing a bunch of analysis that I don't want to present 
-# in my slides. But I need the resulting data frame for a plot I want to present.
-iris_modified <- iris %>%
-  mutate(Species = fct_other(Species, keep = "setosa"))
-```
+# Preliminary Data Exploration
 
 ```{r plot-iris, echo = FALSE}
 # Code hidden with echo = FALSE
 # Uses modified iris dataset from previous chunk
 # Play around with height and width until you're happy with the look
-ggplot(data = iris_modified, mapping = aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
-  geom_point() + 
-  theme_minimal() # theme options: https://ggplot2.tidyverse.org/reference/ggtheme.html
-```
 
----
-
-## Plot and text
-
-.pull-left[
-- Some text
-- goes here
-]
-.pull-right[
-```{r warning=FALSE, out.width="100%", fig.width=4, echo=FALSE}
-# see how I changed out.width and fig.width from defaults
-# to make the figure bigger
-ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
+ggplot(Pb2) +
+  aes(x = PbMeasurement_ppm, y = SamplingSite) +
   geom_boxplot() +
+    theme_classic(base_size = 15)+
+    coord_cartesian(xlim = c(0, 900))+
+   labs(
+    x = "Sampling Site",
+    y = "Pb Concentration (ppm)",
+    title = "Pb Concentration across Sampling Sites")+
   theme_minimal()
 ```
+
+---
+# ANOVA
+
+.pull-left[
+- Null Hypothesis: All group means are equal
+- Alternative Hypothesis: At least one group mean is different from the rest
+- There is a significant difference in the mean values between each sampling site (p-value < 0.001)
+- Reject the null hypothesis
+]
+.pull-right[
+```{r}
+site_aov <- aov(PbMeasurement_ppm ~ SamplingSite, data = Pb2%>%
+            filter(PbMeasurement_ppm < 900)) #remove outliers
+summary(site_aov)
+```
+]
+---
+# Linear Regression Pb Concentration ~ Sample Site
+
+.pull-left[
+- Sites were compared to the Cermak2 transect
+- The 2 parks, elementary school, and garden are significantly lower than Cermak2 (p-value < 0.001)
+- Fisk and SIMS are also significantly lower than Cermak2 (p < 0.05)
+- Residential transect has no significant difference
+- Sample sites explain about 18.61% of the variability within lead concentrations
+]
+.pull-right[
+```{r}
+site_lm <- lm(PbMeasurement_ppm ~ SamplingSite, data = Pb2%>%
+            filter(PbMeasurement_ppm < 900))
+summary(site_lm)
+```
+
 ]
 
 ---
 
-# Tables
+# Linear Regression Pb Concentration ~ Site Group
 
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-```{r iris-table, echo = FALSE}
-kable(head(iris), format = "html")
+.pull-left[
+- Compared each of the site categories to the garden category
+- Industrial corridor category (p-value < 0.05) and residential transect (p-value < 0.001) are both significantly higher than the garden
+- No significant difference between the garden, the park category, and the school
+- Site groups explain about 19.57% of the variability within lead concentrations
+]
+.pull-right[
+```{r}
+#add new samplingsite categories
+Pbdf <-Pb2 %>%
+  mutate(SiteGroup = case_when(
+    SamplingSite %in% c("SIMS", "Cermak2", "Fisk") ~ "IC",
+    SamplingSite == "Paulina" ~ "Res",
+    SamplingSite %in% c("Dvorak", "HarrisonPark") ~ "Park",
+    SamplingSite == "IrmaRuizSchool" ~ "School",
+    SamplingSite == "Paseo" ~ "Garden"
+  )
+         )
+#Linear model Pb ~ GroupSite (industrial corridor vs residential vs community based sites)
+Loc2 <- lm(PbMeasurement_ppm ~ SiteGroup, data = Pbdf)
+summary(Loc2)
 ```
+
+]
 
 ---
 
-# Images
+# Conclusion
 
-```{r castle, echo = FALSE, out.width = "60%", fig.align = "center", fig.cap = "Image credit: Photo by Enjoy Illinois."}
-include_graphics("img/chicago-fall.jpeg")
-```
+- Site locations of parks, schools, and gardens have significantly lower lead concentrations than the industrial corridor and residential area
+- The residential area is significantly higher than the industrial corridor and community-based locations
+- The type of the site does appear to play a role in how surface soil lead concentrations vary across the Pilsen
+- May be different factors driving its variability such as distance from potential polluters or historical lead contamination 
 
 
 ---
 
-# Feeling adventurous?
+class: inverse, center, middle
 
-- Want to find out more about `xaringan`? See https://slides.yihui.name/xaringan/#1.
-
-- You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
-
-- But some of you might want to play around with slide styling. The 
-`xaringanthemer` provides some solutions for this that: https://pkg.garrickadenbuie.com/xaringanthemer.
-
-- And if you want more bells and whistles, there is also `xaringanExtra`: https://pkg.garrickadenbuie.com/xaringanExtra.
+# Thank you!
+---
