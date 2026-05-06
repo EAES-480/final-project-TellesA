@@ -4,6 +4,12 @@ author: "Arianna Telles"
 output: html_document
 ---
 
+> GM GRADE: 19/20 - excellent work! See my suggested workflow
+
+> Description 8/8
+> Content: 9/10 - I suggest using anova (to identify location/group effects) then multiple linear regression to identify which group levels (loactions) specifically impact and by how much
+> Quality 2/2
+
 ```{r load-packages, message = FALSE}
 library(tidyverse)
 library(broom)
