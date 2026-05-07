@@ -17,8 +17,8 @@ The results from the ANOVA show that there is a significant difference in the me
 ## Conclusion
 Based on these results I can conclude that the site locations of parks, schools, and gardens have significantly lower lead concentrations than the industrial corridor and residential area. This could be due to consistent maintenance of these locations. Furthermore, the residential area is significantly higher than the industrial corridor and community-based locations. Therefore, the type of the site does appear to play a role in how surface soil lead concentrations vary across the Pilsen neighborhood, although there may be different factors driving its variability such as distance from potential polluters or historical lead contamination.
 
-Data
+## Data
 Telles, A (2026). EaES396- Field Sampling Survey [Data Set]. https://arcg.is/0HWiKi0
 
-References
+## References
 Telles, A (2026). EaES396- Field Sampling Survey [Data Set]. https://arcg.is/0HWiKi0
